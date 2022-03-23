@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:local="clr-namespace:xam"
+             xmlns:svg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+             xmlns:pancake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:converters="clr-namespace:xam.Converters;assembly=xam"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="xam.InteractiveObjects.InteractiveObjectsPage"
+             BackgroundColor="White">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="Number">
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <converters:PancakeBorderConverter x:Key="PancakeConvert"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid VerticalOptions="FillAndExpand">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackLayout  Grid.Row="0" VerticalOptions="Start"
+                        Margin="{OnPlatform iOS='15,30,15,10', Android='15,10,15,20'}"
+                        Orientation="Horizontal" 
+                        x:Name="Pancake2">
+                <Label x:Name="UkName" VerticalOptions="Center"
+                               Text="Название"
+                               FontAttributes="Bold"
+                               HorizontalOptions="StartAndExpand"
+                               FontSize="15"
+                               TextColor="Black" />
+                <StackLayout
+                            HorizontalOptions="EndAndExpand"
+                            Orientation="Horizontal">
+                </StackLayout>
+            </StackLayout>
+            <local:HeaderViewStack x:Name="headerStack" IsAppTheme="{Binding IsChangeTheme}"  Title="{x:Static local:AppResources.EventsDoors}" Margin="{OnPlatform iOS='0,30,0,10', Android='0,40,0,10'}"
+                                    Grid.RowSpan="3"/>
+            <StackLayout Grid.Row="1"
+                         Grid.RowSpan="2"
+                         Padding="15,20,15,0" VerticalOptions="FillAndExpand">
+                <CollectionView ItemsSource="{Binding Doors}"
+                                SelectionMode="None"
+                                VerticalScrollBarVisibility="Never"
+                                x:Name="CollectionView"
+                                 VerticalOptions="FillAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical"
+                                           ItemSpacing="20"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="2" >
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                                </StackLayout.GestureRecognizers>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=White}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=White, Dark=White}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <pancake:PancakeView CornerRadius="20"
+                                     VerticalOptions="Start"
+                                     BackgroundColor="White"
+                                     Padding="20,0" 
+                                     Border="{Binding Name, Converter={x:StaticResource PancakeConvert}, Mode=TwoWay}"
+                                     >
+                                    <StackLayout>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.8*"/>
+                                                <ColumnDefinition Width="0.2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackLayout VerticalOptions="Center" Grid.Column="0">
+
+                                                <Label Text="{Binding Name}"
+                                                   TextColor="Black"
+                                                   Margin="5,0,0,0"
+                                                   VerticalOptions="Center"
+                                                   FontSize="18"
+                                                   FontAttributes="Bold"/>
+                                            </StackLayout>
+                                            <svg:SvgCachedImage Source="resource://Resources.ic_openDoorAction.svg"
+                                                            ReplaceStringMap="{Binding Name, Converter={x:StaticResource SvgColor}}"
+                                                        HeightRequest="35"
+                                                            HorizontalOptions="EndAndExpand"
+                                                            Grid.Column="1"
+                                                        WidthRequest="35"
+                                                        Margin="0,15"/>
+                                        </Grid>
+                                    </StackLayout>
+                                </pancake:PancakeView>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
